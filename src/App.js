@@ -18,7 +18,6 @@ function App() {
 
   const handleSubmit = event => {
     event.preventDefault();
-    setTextOutput(textInput.toUpperCase());
     conversionMode === 'lowercase'
       ? setTextOutput(textInput.toLowerCase())
       : setTextOutput(textInput.toUpperCase());
