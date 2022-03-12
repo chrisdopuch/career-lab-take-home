@@ -7,6 +7,7 @@ function App() {
   );
   const [conversionMode, setConversionMode] = React.useState('lowercase');
   const [textOutput, setTextOutput] = React.useState('');
+  const [errorMessage, setErrorMessage] = React.useState('');
 
   const handleRadioChange = event => {
     setConversionMode(event.target.value);
@@ -18,6 +19,11 @@ function App() {
 
   const handleSubmit = event => {
     event.preventDefault();
+    setErrorMessage('');
+    if (!textInput) {
+      setErrorMessage('You must input text first!');
+      return;
+    }
     conversionMode === 'lowercase'
       ? setTextOutput(textInput.toLowerCase())
       : setTextOutput(textInput.toUpperCase());
@@ -61,9 +67,10 @@ function App() {
           <label htmlFor="conversion-1">Convert text to uppercase</label>
         </div>
         <button type="submit">Submit</button>
+        {errorMessage && <p className="error">{errorMessage}</p>}
         <div className="form-control form-control__text u-mt-3">
           <label htmlFor="result">Converted text:</label>
-          <output id="result" class="result">
+          <output id="result" className="result">
             {textOutput}
           </output>
         </div>
