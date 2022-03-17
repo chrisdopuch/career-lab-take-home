@@ -2,13 +2,16 @@ import './App.css';
 import React from 'react';
 
 function App() {
-  const [textInput, setTextInput] = React.useState('Here is some example text.');
+  const [textInput, setTextInput] = React.useState(
+    'Here is some example text.'
+  );
   const [conversionMode, setConversionMode] = React.useState('lowercase');
   const [textOutput, setTextOutput] = React.useState('');
+  const [errorMessage, setErrorMessage] = React.useState('');
 
   const handleRadioChange = event => {
     setConversionMode(event.target.value);
-  }
+  };
 
   const handleTextareaChange = event => {
     setTextInput(event.target.value);
@@ -16,7 +19,15 @@ function App() {
 
   const handleSubmit = event => {
     event.preventDefault();
-    setTextOutput('Your formatted text will go here!')
+    setErrorMessage('');
+    if (!textInput) {
+      setErrorMessage('You must input text first!');
+      return;
+    }
+    conversionMode === 'lowercase'
+      ? setTextOutput(textInput.toLowerCase())
+      : setTextOutput(textInput.toUpperCase());
+    setTextInput('');
   };
 
   return (
@@ -39,7 +50,7 @@ function App() {
             name="conversion"
             id="conversion-0"
             value="lowercase"
-            checked={conversionMode === "lowercase"}
+            checked={conversionMode === 'lowercase'}
             onChange={handleRadioChange}
           />
           <label htmlFor="conversion-0">Convert text to lowercase</label>
@@ -50,15 +61,18 @@ function App() {
             name="conversion"
             id="conversion-1"
             value="uppercase"
-            checked={conversionMode === "uppercase"}
+            checked={conversionMode === 'uppercase'}
             onChange={handleRadioChange}
           />
           <label htmlFor="conversion-1">Convert text to uppercase</label>
         </div>
-        <button type="button">Submit</button>
+        <button type="submit">Submit</button>
+        {errorMessage && <p className="error">{errorMessage}</p>}
         <div className="form-control form-control__text u-mt-3">
           <label htmlFor="result">Converted text:</label>
-          <output id="result" class="result">{textOutput}</output>
+          <output id="result" className="result">
+            {textOutput}
+          </output>
         </div>
       </form>
     </div>
